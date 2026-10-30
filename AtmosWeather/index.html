@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1225" />
+  <meta name="description" content="Atmos — a beautiful live weather dashboard with forecasts, location search, and weather insights." />
+  <title>Atmos — Weather, reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Atmos home"><span class="brand-mark">✳</span><span>atmos<span class="brand-dot">.</span></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active"><span class="nav-icon">◉</span> Overview</button>
+        <button class="nav-item" id="forecastNav"><span class="nav-icon">◷</span> Forecast</button>
+        <button class="nav-item" id="savedNav"><span class="nav-icon">☆</span> Saved places</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-orbit"><span>✦</span></div>
+        <p class="side-tip-title">A little weather wisdom</p>
+        <p class="side-tip" id="weatherTip">Every cloud has a silver lining.</p>
+        <div class="side-footer"><span class="status-dot"></span> LIVE WEATHER DATA</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><p class="eyebrow" id="todayLabel">YOUR WEATHER, AT A GLANCE</p><h1>Good day, <span>sky watcher.</span></h1></div>
+        <div class="top-actions">
+          <button class="icon-button" id="unitToggle" title="Switch temperature unit" aria-label="Switch temperature unit">°C</button>
+          <button class="location-button" id="locateBtn"><span>⌖</span> Use my location</button>
+          <div class="avatar">A</div>
+        </div>
+      </header>
+
+      <section class="search-row">
+        <div class="search-box"><span class="search-symbol">⌕</span><input id="cityInput" type="text" placeholder="Search a city, e.g. Tokyo..." autocomplete="off" /><button id="searchBtn">Search <span>↗</span></button></div>
+        <div class="search-hint">TRY <button class="city-chip" data-city="Delhi">Delhi</button><button class="city-chip" data-city="London">London</button><button class="city-chip" data-city="Tokyo">Tokyo</button></div>
+      </section>
+
+      <div class="loading-state" id="loadingState"><span class="loader"></span><span>Reading the sky…</span></div>
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+
+      <section class="dashboard-grid" id="dashboard">
+        <article class="hero-card panel">
+          <div class="hero-top"><div><span class="live-pill"><i></i> CURRENT WEATHER</span><p class="hero-location" id="cityName">Delhi, India</p><p class="hero-date" id="currentDate">Today · --</p></div><div class="weather-glyph" id="mainGlyph">☀</div></div>
+          <div class="current-main"><div class="temperature" id="temperature">--<span>°C</span></div><div class="condition-wrap"><p id="condition">Loading weather</p><span id="feelsLike">Feels like --°</span></div></div>
+          <div class="hero-bottom"><div class="high-low"><span>↗ <b id="highTemp">--°</b> High</span><span>↘ <b id="lowTemp">--°</b> Low</span></div><div class="sun-caption"><span>☼</span> Make today count.</div></div>
+        </article>
+
+        <article class="sun-card panel">
+          <div class="card-heading"><div><span class="section-kicker">DAYLIGHT</span><h2>Sun tracker</h2></div><span class="round-icon">☼</span></div>
+          <div class="sun-visual"><div class="sun-track"></div><div class="sun-core">☼</div><div class="sun-time sunrise"><span>↑</span><b id="sunrise">--:--</b><small>Sunrise</small></div><div class="sun-time sunset"><span>↓</span><b id="sunset">--:--</b><small>Sunset</small></div></div>
+          <div class="daylight-foot"><span>LOCAL SUN TIMES</span><span id="daylightLength">A new day begins</span></div>
+        </article>
+
+        <article class="metric-card panel"><div class="metric-top"><span class="metric-icon humidity">≈</span><span class="metric-label">HUMIDITY</span><span class="metric-status">AIR</span></div><div class="metric-value" id="humidity">--<small>%</small></div><div class="metric-track"><span id="humidityBar"></span></div><p class="metric-note" id="humidityNote">Moisture in the air</p></article>
+        <article class="metric-card panel"><div class="metric-top"><span class="metric-icon wind">↝</span><span class="metric-label">WIND SPEED</span><span class="metric-status">BREEZE</span></div><div class="metric-value" id="wind">--<small> km/h</small></div><div class="wind-compass"><span class="compass-n">N</span><span class="compass-e">E</span><span class="compass-s">S</span><span class="compass-w">W</span><i id="windNeedle"></i><b>✦</b></div><p class="metric-note" id="windNote">Wind at your location</p></article>
+        <article class="metric-card panel"><div class="metric-top"><span class="metric-icon uv">☼</span><span class="metric-label">UV INDEX</span><span class="metric-status">SUN CARE</span></div><div class="metric-value" id="uv">--<small>/ 11</small></div><div class="uv-scale"><span></span><span></span><span></span><span></span><span></span><span></span></div><p class="metric-note" id="uvNote">UV exposure level</p></article>
+        <article class="metric-card panel"><div class="metric-top"><span class="metric-icon visibility">◉</span><span class="metric-label">VISIBILITY</span><span class="metric-status">SIGHT</span></div><div class="metric-value" id="visibility">--<small> km</small></div><div class="visibility-art"><span></span><span></span><span></span><i>◉</i></div><p class="metric-note">How far you can see</p></article>
+      </section>
+
+      <section class="forecast-section panel" id="forecastSection">
+        <div class="section-header"><div><span class="section-kicker">THE NEXT FEW DAYS</span><h2>Forecast <span class="muted-title">/ stay one step ahead</span></h2></div><span class="forecast-badge">5 DAY OUTLOOK</span></div>
+        <div class="forecast-list" id="forecastList"></div>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="hourly-card panel"><div class="section-header compact"><div><span class="section-kicker">HOUR BY HOUR</span><h2>Today’s rhythm</h2></div><span class="subtle-label">NEXT 8 HOURS</span></div><div class="hourly-list" id="hourlyList"></div></article>
+        <article class="insight-card panel"><div class="insight-heading"><span class="insight-spark">✦</span><div><span class="section-kicker">ATMOS INSIGHT</span><h2>Dress for the day</h2></div></div><p id="insightText">A little weather insight will appear here.</p><div class="insight-footer"><span>✧</span><span id="insightTag">PERSONALIZED FOR YOU</span></div></article>
+      </section>
+      <footer class="page-footer"><span>✳ atmos. <span class="footer-muted">A clearer view of your day.</span></span><span>Weather data by Open-Meteo · No API key required</span></footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
